@@ -14,8 +14,8 @@ class TG:
             tgclient = AWSUtility().assume_aws_role_arn(arn, aws_account_name).client("elbv2",
                                                                                       region_name=Defaults.default_aws_region)
             tgs = tgclient.describe_target_groups()["TargetGroups"]
+            print("updating", aws_account_name, "tg")
             for tg in tgs:
-                print(tg["TargetGroupArn"])
                 tgarn = tg["TargetGroupArn"]
                 tgname = tg["TargetGroupName"]
                 targets = tgclient.describe_target_health(
@@ -24,7 +24,6 @@ class TG:
                 for target in targets:
                     instance_id = target["Target"]["Id"]
                     instance_health = target["TargetHealth"]["State"]
-                    print(instance_id, instance_health)
                     inventory_writer.writerow(["tg",tgname , instance_id, instance_health])
 
     def search_tg(self, arguments):
