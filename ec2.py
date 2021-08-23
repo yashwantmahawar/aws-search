@@ -56,19 +56,28 @@ class EC2:
         if len(ec2_arguments) == 0:
             print("Please add search parameters")
         else:
-            print("Searching with given parameters [" + ", ".join(ec2_arguments) + "]")
-            for profile in Defaults.aws_accounts:
-                with open("/tmp/ec2_" + profile["name"] + ".csv", "r") as inventory:
-                    inventory_reader = csv.reader(inventory, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+            ec2_arguments = "|".join(ec2_arguments).split(",")
+            for index, ec2_argument in enumerate(ec2_arguments):
+                ec2_arguments[index] = ec2_argument.strip("|").replace("|", " ")
 
-                    count = 0
-                    for line in inventory_reader:
-                        if all(argument in ",".join(line) for argument in ec2_arguments):
-                            count += 1
-                            if detailed:
-                                print(line)
-                            else:
-                                print(style.GREEN + line[1] + style.RESET, line[2])
-                    if count != 0:
-                        print("total instance found ", count, "in", style.RED + profile["name"] + style.RESET)
-                        print("")
+            # print(ec2_arguments)
+
+            # print("Searching with given parameters [" + ", ".join(ec2_arguments) + "]")
+            for ec2_argument in ec2_arguments:
+                # print("searching for *******************",ec2_argument.split())
+                ec2_argument = ec2_argument.split()
+                for profile in Defaults.aws_accounts:
+                    with open("/tmp/ec2_" + profile["name"] + ".csv", "r") as inventory:
+                        inventory_reader = csv.reader(inventory, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+
+                        for line in inventory_reader:
+                            if all(argument in ",".join(line) for argument in ec2_argument):
+                                line = " ".join(line)
+                                for argument in ec2_argument:
+                                    line = line.replace(argument, style.RED + argument + style.RESET)
+                                line = line.split()
+
+                                if detailed:
+                                    print(" ".join(line))
+                                else:
+                                    print(style.GREEN + line[1] + style.RESET, line[2])
