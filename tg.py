@@ -2,6 +2,7 @@ import csv
 from default import Defaults
 from style import style
 from awsUtility import AWSUtility
+import os
 
 
 class TG:
@@ -9,7 +10,8 @@ class TG:
         pass
 
     def update_tg(self, arn, aws_account_name):
-        with open("/tmp/tg_" + aws_account_name + ".csv", "w") as inventory_write:
+        os.makedirs(Defaults.inventory+"/tg/", exist_ok = True)
+        with open(Defaults.inventory+"/tg/" + aws_account_name + ".csv", "w") as inventory_write:
             inventory_writer = csv.writer(inventory_write, delimiter=',', quoting=csv.QUOTE_MINIMAL)
             tgclient = AWSUtility().assume_aws_role_arn(arn, aws_account_name).client("elbv2",
                                                                                       region_name=Defaults.default_aws_region)
@@ -33,7 +35,7 @@ class TG:
         else:
             print("Searching with given parameters [" + ", ".join(arguments) + "]")
             for profile in Defaults.aws_accounts:
-                with open("/tmp/tg_" + profile["name"] + ".csv", "r") as inventory:
+                with open(Defaults.inventory+"/ec2/" + profile["name"] + ".csv", "r") as inventory:
                     inventory_reader = csv.reader(inventory, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 
                     count = 0

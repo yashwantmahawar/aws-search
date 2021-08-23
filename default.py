@@ -13,6 +13,7 @@ class Defaults:
     default_aws_profile_name = configs["default_aws_profile_name"]
     default_aws_region = configs["default_aws_region"]
     supported_resources = configs["supported_resources"]
+    inventory = configs["inventory"]
 
     def get_aws_default_session(self):
         session = boto3.Session(profile_name=Defaults.default_aws_profile_name, region_name=Defaults.default_aws_region)

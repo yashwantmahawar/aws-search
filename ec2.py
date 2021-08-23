@@ -2,6 +2,7 @@ import csv
 from default import Defaults
 from style import style
 from awsUtility import AWSUtility
+import os
 
 
 class EC2:
@@ -9,7 +10,8 @@ class EC2:
         pass
 
     def update_ec2(self, arn, aws_account_name):
-        with open("/tmp/ec2_" + aws_account_name + ".csv", "w") as inventory_write:
+        os.makedirs(Defaults.inventory+"/ec2/", exist_ok = True)
+        with open(Defaults.inventory+"/ec2/" + aws_account_name + ".csv", "w") as inventory_write:
             inventory_writer = csv.writer(inventory_write, delimiter=',', quoting=csv.QUOTE_MINIMAL)
             ec2client = AWSUtility().assume_aws_role_arn(arn, aws_account_name).client("ec2",
                                                                                        region_name=Defaults.default_aws_region)
@@ -67,7 +69,7 @@ class EC2:
                 # print("searching for *******************",ec2_argument.split())
                 ec2_argument = ec2_argument.split()
                 for profile in Defaults.aws_accounts:
-                    with open("/tmp/ec2_" + profile["name"] + ".csv", "r") as inventory:
+                    with open(Defaults.inventory+"/ec2/" + profile["name"] + ".csv", "r") as inventory:
                         inventory_reader = csv.reader(inventory, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 
                         for line in inventory_reader:

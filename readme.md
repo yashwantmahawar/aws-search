@@ -12,6 +12,7 @@ This tool is to made search easier for aws resources. like for every search you 
   "default_aws_profile_name" : "default_aws_profile_name",
   "default_aws_region" : "ap-south-1",
   "supported_resources" : ["ec2","tg"],
+  "inventory": "/opt/aws_search",
   "aws_accounts" : [
     {
       "name": "account1",
@@ -31,7 +32,7 @@ This tool is to made search easier for aws resources. like for every search you 
 
 #### Setup alias in your bash profile
 ```shell
-alias search="python3 localpath/main.py"
+alias search="sudo python3 localpath/main.py"
 ```
 
 #### Update your local inventory
