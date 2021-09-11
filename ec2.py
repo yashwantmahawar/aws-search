@@ -82,4 +82,4 @@ class EC2:
                                 if detailed:
                                     print(" ".join(line))
                                 else:
-                                    print(style.GREEN + line[1] + style.RESET, line[2])
+                                    print(style.GREEN + line[1] + style.RESET, line[2], profile["name"])

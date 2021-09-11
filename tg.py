@@ -35,7 +35,7 @@ class TG:
         else:
             print("Searching with given parameters [" + ", ".join(arguments) + "]")
             for profile in Defaults.aws_accounts:
-                with open(Defaults.inventory+"/ec2/" + profile["name"] + ".csv", "r") as inventory:
+                with open(Defaults.inventory+"/tg/" + profile["name"] + ".csv", "r") as inventory:
                     inventory_reader = csv.reader(inventory, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 
                     count = 0
