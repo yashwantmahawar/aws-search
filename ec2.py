@@ -47,7 +47,7 @@ class EC2:
                 instance_id = i["InstanceId"]
 
                 sg_name = sg_name.strip()
-                inventory_writer.writerow(["ec2", private_ip, name, sg_name, instance_id, techteam, instance_state])
+                inventory_writer.writerow(["ec2", private_ip, name, sg_name, instance_id, "techteam="+techteam, instance_state])
 
     def search_ec2(self, ec2_arguments):
         detailed = False
